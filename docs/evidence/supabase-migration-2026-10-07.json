@@ -1,0 +1,57 @@
+{
+  "date_utc": "2026-10-07",
+  "repository": "nckfpsdev/Orbit",
+  "branch": "migration/supabase-vercel-v2",
+  "code_checkpoint": "bf09bbc71f3cea3073f37b7998ebfbcd06ee9dff",
+  "database": {
+    "project": "wnqxyoepqpexkshofxhv",
+    "region": "sa-east-1",
+    "major_version": 17,
+    "tables": 29,
+    "rls_tables": 29,
+    "validated_foreign_keys": 48,
+    "unvalidated_constraints": 0,
+    "migrations": 3,
+    "profile_count_before_after": 1,
+    "organization_count_before_after": 1,
+    "credit_records_before_after": 3,
+    "residual_fixtures": 0,
+    "runtime_role_bypassrls": false
+  },
+  "connector": {
+    "schema": "PASS",
+    "backend_select_update_delete_isolation": "PASS",
+    "data_api_select_update_delete_isolation": "PASS",
+    "ownership_transfer_rejected": "PASS",
+    "client_credit_changes_rejected": "PASS",
+    "revoked_session_database_access_rejected": "PASS",
+    "commercial_published_lookup": "PASS",
+    "validation_transaction": "ROLLED_BACK"
+  },
+  "advisors": {
+    "security_findings": 0,
+    "performance": {
+      "level": "INFO",
+      "name": "unused_index",
+      "count": 37,
+      "reason": "No production workload yet; no index was removed."
+    }
+  },
+  "local": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "unit_tests": 42,
+    "postgres_tests": 4,
+    "build": "PASS",
+    "production_dependency_audit": "PASS",
+    "postgres_tcp": "SKIPPED_WORKSPACE_NETWORK_LIMITATION"
+  },
+  "runtime_e2e": "NOT_EXECUTED_DEFERRED_TO_AUTHORIZED_VERCEL_PREVIEW",
+  "deployments_created": 0,
+  "production_changed": false,
+  "scan": {
+    "direct_runtime_dependencies": 0,
+    "legacy_configurations_removed": true,
+    "historical_references": "docs/MIGRATION.md and archived baseline evidence/images only"
+  }
+}

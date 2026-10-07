@@ -34,3 +34,15 @@ Vercel existente: `orbit`, `prj_hrn19z3YiqHYsVBHDNwUWXHniTV4`. Não recriar nem 
 TCP PostgreSQL local: `SKIPPED_WORKSPACE_NETWORK_LIMITATION`. Introspecção, constraints, RLS e SQL são validados pela integração Supabase. Compilação não acessa banco. Conexão real da aplicação e E2E Auth serão validados no futuro Preview Vercel autorizado; não inferir esse sucesso de testes locais.
 
 Não alterar DNS, proxy, firewall, credenciais, recursos legados ou produção para resolver a limitação do workspace.
+
+## Checkpoint reconstruído
+
+Código preservado remotamente em `bf09bbc71f3cea3073f37b7998ebfbcd06ee9dff`. O inventário acima registra a arquitetura de origem; seus componentes operacionais foram substituídos/removidos. Referências remanescentes em imagens/evidence antigas são históricas e não executam nem configuram infraestrutura.
+
+`pnpm predeploy`: lint, typecheck, 42 testes de domínio/contratos/Auth-redirect/parâmetros, quatro testes PostgreSQL, build nativo Next.js e auditoria de dependências passaram. A correção Sharp 0.35.5 foi verificada no advisory oficial GHSA-wq5f-xc86-pv6w; a política de sete dias permaneceu ativa.
+
+Integração Supabase: 29/29 tabelas com RLS, 48 FKs válidas, zero constraints não validadas, zero alerta de segurança. Isolamento SELECT/UPDATE/DELETE A/B, rejeição de transferência de ownership, bloqueio de manipulação de créditos pela Data API e sessão revogada foram exercitados em transação com rollback. Perfis/organizações/ledger existentes foram preservados; zero resíduo de fixtures. São provas de autorização PostgreSQL, não de login real.
+
+O advisor de performance informa 37 índices ainda não utilizados, nível INFO, compatível com ausência de carga; não é motivo para remover índices de relações/filtros antes do uso real. URL e publishable key existentes da Vercel foram lidas sem alteração e correspondem ao Supabase Orbit. Nenhum valor de credencial foi registrado.
+
+Próxima etapa: Preview autorizado no projeto Vercel existente, configuração das URLs reais de confirmação Auth e teste de conectividade/E2E. Nenhum Preview, promoção, alteração de produção ou recriação de recurso foi executado neste checkpoint. [Evidência sanitizada](evidence/supabase-migration-2026-10-07.json).

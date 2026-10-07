@@ -134,9 +134,16 @@ export async function updateWebsite(
       422,
     );
   const date = now();
-  const changed = await run(UPDATE_WEBSITE_VERSION,
-    JSON.stringify(content), date, websiteId, c.orgId, version,
-    id("version"), note, date,
+  const changed = await run(
+    UPDATE_WEBSITE_VERSION,
+    JSON.stringify(content),
+    date,
+    websiteId,
+    c.orgId,
+    version,
+    id("version"),
+    note,
+    date,
   );
   if (!changed.meta.changes)
     throw new AppError(

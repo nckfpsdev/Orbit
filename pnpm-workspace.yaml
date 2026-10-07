@@ -1,4 +1,4 @@
-# Copied Sites are standalone projects and cannot inherit the monorepo policy.
+# Dependency supply-chain policy.
 # Narrow exception for the verified security fix; the seven-day policy remains.
 minimumReleaseAgeExclude:
   - source-map-js@1.2.2
@@ -11,9 +11,6 @@ allowBuilds:
   fsevents: true
   sharp: true
   unrs-resolver: true
-  workerd: true
-storeDir: ${SITES_PNPM_SHARED_STORE:-.sites-runtime/pnpm-store}
-cacheDir: ${SITES_PNPM_SHARED_STORE:-.sites-runtime/pnpm-store}/policy-cache
 enableGlobalVirtualStore: false
 # Reuse store files with clones or hardlinks before falling back to copies.
 packageImportMethod: auto
@@ -21,7 +18,8 @@ packageImportMethod: auto
 verifyDepsBeforeRun: false
 optimisticRepeatInstall: false
 overrides:
-  miniflare>sharp: 0.35.4
+  # Verified patch GHSA-wq5f-xc86-pv6w; keep the seven-day release policy.
+  sharp: 0.35.5
   browserslist: 4.28.7
   source-map-js: 1.2.2
   baseline-browser-mapping: 2.11.0

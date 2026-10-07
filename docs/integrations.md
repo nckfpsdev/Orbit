@@ -97,14 +97,14 @@ API Gemini `generateContent`, saída JSON validada no servidor. Configure um mod
 
 ## Scheduler e fila
 
-Um scheduler externo autorizado pode chamar `POST /api/internal/run` com `Authorization: Bearer WORKER_SECRET`. Ative `SCHEDULER_ENABLED=true` e então ative monitores desejados. Cada chamada processa até três monitores devidos e uma janela limitada da fila. Monitores começam pausados, têm intervalo mínimo de 24 horas e consumo normal de créditos. Sem scheduler, a UI oferece execução manual e não afirma que há rotina rodando.
+Um scheduler externo autorizado pode chamar `POST /api/internal/run` com `x-scheduler-secret: SCHEDULER_SECRET` e `Authorization: Bearer` de uma sessão Supabase real do workspace. Ative `SCHEDULER_ENABLED=true` e então ative monitores desejados. Cada chamada processa até três monitores devidos e uma janela limitada da fila. Monitores começam pausados, têm intervalo mínimo de 24 horas e consumo normal de créditos. Sem scheduler, a UI oferece execução manual e não afirma que há rotina rodando.
 
-Um Site privado pode bloquear chamadas de scheduler externo no gateway antes de alcançar o Worker. Nesse caso, use um scheduler da mesma infraestrutura ou uma integração de acesso autorizada, preservando o controle de audiência do Site. O segredo do endpoint não transforma o gateway privado em público.
+Deployment Protection pode exigir acesso autorizado ao Preview, além da sessão Supabase e do segredo do scheduler. Não remover essa proteção apenas para facilitar um teste.
 
 ## Resiliência e orçamento
 
 Endpoints configurados devem usar HTTPS, sem userinfo, IP reservado ou porta não padrão. Fetch usa redirect manual e rejeita 3xx, evitando encaminhamento de Bearer para outro destino. Timeout: 20s geral, 30s Overpass, 45s Gemini; JSON é limitado a 2 MB e validado por contrato. Erros de transporte/contrato mantêm o lead básico e estornam reservas. Dados parciais preservam avisos e direitos de uso.
 
-Limites adicionais: `GLOBAL_SEARCH_DAILY_LIMIT`, `GLOBAL_AI_DAILY_LIMIT`, `GLOBAL_AUDIT_DAILY_LIMIT`; créditos e rate limit por organização permanecem ativos. O domínio do alvo nunca é requisitado diretamente pelo Worker. Cache de geocoding é compartilhado apenas para informações públicas; caches comerciais incluem organização.
+Limites adicionais: `GLOBAL_SEARCH_DAILY_LIMIT`, `GLOBAL_AI_DAILY_LIMIT`, `GLOBAL_AUDIT_DAILY_LIMIT`; créditos e rate limit por organização permanecem ativos. O domínio do alvo nunca é requisitado diretamente pelo backend. Cache de geocoding é compartilhado apenas para informações públicas; caches comerciais incluem organização.
 
-Contratos simulados de falhas passaram no Worker compilado. A descoberta real precisa de smoke no destino: nesta auditoria o Overpass respondeu 406 e workerd local não resolveu DNS externo. Isso não prova indisponibilidade para usuários ou correção da integração de produção. Nenhuma fonte alternativa foi escolhida silenciosamente.
+Testes locais validam normalização, presença, geografia, contratos e erros. A disponibilidade real do provider e a descoberta através da aplicação devem ser verificadas no futuro Preview Vercel; nenhuma falha real é convertida silenciosamente em fixture.

@@ -17,14 +17,36 @@ export interface Context {
 }
 export async function context(): Promise<Context> {
   const user = await getIdentity();
-  if (!user) throw new AppError("UNAUTHORIZED", "Entre com sua conta para continuar.", 401);
+  if (!user)
+    throw new AppError(
+      "UNAUTHORIZED",
+      "Entre com sua conta para continuar.",
+      401,
+    );
+  const session = await row<{ valid: boolean }>(
+    "SELECT private.session_valid() AS valid",
+  );
+  if (!session?.valid)
+    throw new AppError(
+      "UNAUTHORIZED",
+      "Sua sessão terminou. Entre novamente.",
+      401,
+    );
   const profile = await row<{ profile_json: string }>(
     "SELECT private.bootstrap_profile(?::uuid,?,?,?::jsonb) AS profile_json",
-    user.id, user.email, user.name,
-    JSON.stringify({ ...DEFAULT_SETTINGS, provider: demoEnabled() ? "mock" : "osm" }),
+    user.id,
+    user.email,
+    user.name,
+    JSON.stringify({
+      ...DEFAULT_SETTINGS,
+      provider: demoEnabled() ? "mock" : "osm",
+    }),
   );
-  if (!profile) throw new AppError("FORBIDDEN", "Sessão ou perfil não autorizado.", 403);
-  const { user_id: userId, organization_id: orgId } = JSON.parse(profile.profile_json) as { user_id: string; organization_id: string };
+  if (!profile)
+    throw new AppError("FORBIDDEN", "Sessão ou perfil não autorizado.", 403);
+  const { user_id: userId, organization_id: orgId } = JSON.parse(
+    profile.profile_json,
+  ) as { user_id: string; organization_id: string };
   const org = await row<{
     credits: number;
     settings_json: string;

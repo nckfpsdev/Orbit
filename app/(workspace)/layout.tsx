@@ -10,7 +10,9 @@ export default async function WorkspaceLayout({
   children: React.ReactNode;
 }) {
   if (!(await getIdentity())) redirect("/login");
-  const session = await row<{ valid: boolean }>("SELECT private.session_valid() AS valid");
+  const session = await row<{ valid: boolean }>(
+    "SELECT private.session_valid() AS valid",
+  );
   if (!session?.valid) redirect("/login");
   return (
     <WorkspaceProvider>

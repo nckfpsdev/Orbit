@@ -1,7 +1,11 @@
 import { LoginForm } from "@/components/orbit/login-form";
 import { safeReturnTo } from "@/lib/supabase/redirect";
 import { Orbit, ShieldCheck, Compass } from "lucide-react";
-export default async function Login({ searchParams }: { searchParams: Promise<{ return_to?: string }> }) {
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: Promise<{ return_to?: string }>;
+}) {
   const returnTo = safeReturnTo((await searchParams).return_to);
   return (
     <main id="main-content" className="login-page">

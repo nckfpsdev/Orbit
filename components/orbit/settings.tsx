@@ -298,7 +298,7 @@ export function Settings() {
                 <p>{data.user.email}</p>
                 <span className="saved-badge">Proprietário do workspace</span>
                 <p className="note">
-                  Autenticação com sua conta ChatGPT. Dados do produto separados
+                  Autenticação segura com sua conta Orbit. Dados do produto separados
                   por organização e protegidos no servidor.
                 </p>
                 <Button asChild variant="outline">

@@ -15,7 +15,6 @@
 
 # next.js
 /.next/
-/.vinext/
 /out/
 
 # misc
@@ -38,9 +37,7 @@ yarn-error.log*
 # typescript
 next-env.d.ts
 /dist/
-/.wrangler/
 # Checkout-local execution profile and tool state; never publish them.
-/.sites-runtime/
 /.agents/
 /.codex/
 /outputs/
@@ -48,5 +45,5 @@ next-env.d.ts
 
 *.tsbuildinfo
 
-# Private D1 recovery exports/configuration; never commit real business/user data.
+# Private database backups; never commit business/user data.
 /recovery-private/

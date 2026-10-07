@@ -40,8 +40,8 @@ export async function boundedText(
   }
   return new TextDecoder().decode(bytes);
 }
-export async function readJson(request: Request) {
-  const text = await boundedText(request, 80000);
+export async function readJson(request: Request, maxBytes = 80000) {
+  const text = await boundedText(request, maxBytes);
   try {
     return JSON.parse(text) as unknown;
   } catch {

@@ -12,7 +12,6 @@ const checks = [
   "test",
   "test:database",
   "build",
-  "test:worker",
 ];
 for (const name of checks) {
   process.stdout.write(`\n[predeploy] ${name}\n`);

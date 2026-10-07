@@ -144,15 +144,15 @@ export async function searchBusinesses(
       JSON.stringify(center),
       f.provider,
       filtered.length,
-      Number(!!cache),
+      !!cache,
       partial ? "partial" : "complete",
       now(),
     );
     for (let i = 0; i < filtered.length; i += 40)
       await batch(
         filtered.slice(i, i + 40).map((b, j) => ({
-          sql: "INSERT INTO search_results (id,search_id,business_id,position) VALUES (?,?,?,?)",
-          args: [id("result"), searchId, b.id, i + j],
+          sql: "INSERT INTO search_results (id,organization_id,search_id,business_id,position) VALUES (?,?,?,?,?)",
+          args: [id("result"), c.orgId, searchId, b.id, i + j],
         })),
       );
     await audit(
@@ -189,7 +189,7 @@ export async function getSearch(
     filters_json: string;
     center_json: string;
     result_count: number;
-    cached: number;
+    cached: boolean;
     status: string;
     provider: string;
   }>(

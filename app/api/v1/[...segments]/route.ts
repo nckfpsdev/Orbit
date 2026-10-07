@@ -48,6 +48,8 @@ import {
 } from "@/lib/server/validation";
 import { id, now, run, rows, row } from "@/lib/server/db";
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+export const maxDuration = 300;
 interface Params {
   params: Promise<{ segments: string[] }>;
 }

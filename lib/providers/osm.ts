@@ -85,7 +85,7 @@ export class OpenStreetMapProvider implements LeadProviderInterface {
     );
     const leaseKey = `overpass_lease_${stableHash(endpoint)}`;
     const leaseToken = JSON.stringify(crypto.randomUUID());
-    // One in-flight query per configured endpoint across all workspaces/Workers.
+    // One in-flight query per configured endpoint across all workspaces/serverless instances.
     // A crashed request releases itself after 45 seconds; no schema change needed.
     const lease = await row<{ key: string }>(
       "INSERT INTO caches (key,organization_id,value_json,expires_at) VALUES (?,NULL,?,?) ON CONFLICT(key) DO UPDATE SET value_json=excluded.value_json,expires_at=excluded.expires_at WHERE caches.expires_at<=? RETURNING key",

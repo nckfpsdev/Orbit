@@ -1,1 +1,0 @@
-CREATE INDEX `idx_search_results_position` ON `search_results` (`search_id`,`position`);

@@ -1,6 +1,7 @@
 const allowedCodes = new Set([
   "DATABASE_URL_NOT_CONFIGURED",
   "DATABASE_ROLE_INVALID",
+  "DATABASE_CA_INVALID",
   "SELF_SIGNED_CERT_IN_CHAIN",
   "DEPTH_ZERO_SELF_SIGNED_CERT",
   "UNABLE_TO_GET_ISSUER_CERT_LOCALLY",
@@ -28,6 +29,11 @@ const allowedCodes = new Set([
   "53400",
   "57P01",
   "57014",
+  "XX000",
+  "P0001",
+  "42601",
+  "22023",
+  "SASL_SIGNATURE_MISMATCH",
 ]);
 
 /** Log a diagnostic code, never connection strings, SQL, or error messages. */

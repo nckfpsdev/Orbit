@@ -1,3 +1,5 @@
+import { X509Certificate } from "node:crypto";
+
 const errors = [];
 const env = process.env;
 for (const key of [
@@ -24,6 +26,17 @@ try {
 }
 if (!["production", "development", "test"].includes(env.APP_ENV))
   errors.push("APP_ENV inválida.");
+if (env.SUPABASE_DB_CA_CERT) {
+  try {
+    const ca = env.SUPABASE_DB_CA_CERT.replace(/\\n/g, "\n").trim();
+    if (!new X509Certificate(ca).ca || ca.includes("PRIVATE KEY"))
+      throw new Error();
+  } catch {
+    errors.push(
+      "SUPABASE_DB_CA_CERT deve conter uma CA pública válida em PEM.",
+    );
+  }
+}
 const origin =
   env.APP_ORIGIN || (env.VERCEL_URL ? "https://" + env.VERCEL_URL : "");
 try {

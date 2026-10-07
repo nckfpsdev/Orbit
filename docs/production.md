@@ -8,6 +8,8 @@ Framework nextjs, raiz do repositório, Node 24.x, pnpm 11.25.0. Install: `pnpm 
 
 Defina URL/publishable key Supabase, DATABASE_URL do papel existente orbit_backend, APP_ENV=production em Preview/Production; opcionais estão em .env.example. Nunca usar service key pública nem conexão postgres administrativa no runtime. Transaction pooler 6543, prepare:false, TLS verificado, max=3 por instância, statement_timeout de 20s. Não girar credenciais em resposta à limitação TCP local.
 
+Se o pooler apresentar `SELF_SIGNED_CERT_IN_CHAIN`, baixe a CA pública em Supabase Database Settings → SSL Configuration e configure o PEM em `SUPABASE_DB_CA_CERT` no ambiente autorizado. O driver continua verificando certificado e hostname. Não desativar TLS nem usar `rejectUnauthorized:false`. A validação da migração configurou essa variável somente em Preview, na branch `migration/supabase-vercel-v2`; produção permanece sem alteração. Renovar a CA através do dashboard quando necessário.
+
 `APP_ORIGIN` é a origem HTTPS canônica; Preview usa VERCEL_URL quando não definido. Na próxima etapa, registrar a URL real de Preview nas URLs de callback/redirect do Supabase Auth (incluindo `/auth/confirm`), sem inventar domínio nem alterar a origem de produção. Confirmar templates de confirmação de e-mail e SMTP do ambiente antes de testar cadastro real.
 
 ## Validação futura obrigatória

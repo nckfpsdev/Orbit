@@ -210,7 +210,7 @@ export async function geocode(f: SearchFilters): Promise<Coordinates> {
     source: "Geocoding · OpenStreetMap",
   };
   await run(
-    "INSERT OR REPLACE INTO caches (key,organization_id,value_json,expires_at) VALUES (?,NULL,?,?)",
+    "INSERT INTO caches (key,organization_id,value_json,expires_at) VALUES (?,NULL,?,?) ON CONFLICT(key) DO UPDATE SET value_json=excluded.value_json,expires_at=excluded.expires_at",
     key,
     JSON.stringify(result),
     Date.now() + 30 * 86400000,

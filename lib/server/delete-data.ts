@@ -36,7 +36,7 @@ export async function deleteCommercialData(c: Context) {
       args: [c.orgId],
     });
   statements.push({
-    sql: "UPDATE organizations SET initialized=1 WHERE id=?",
+    sql: "UPDATE organizations SET initialized=true WHERE id=?",
     args: [c.orgId],
   });
   await batch(statements);

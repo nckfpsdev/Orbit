@@ -73,7 +73,7 @@ export async function searchBusinesses(
       creditsUsed = c.settings.credit_costs.search;
       if (f.provider !== "licensed")
         await run(
-          "INSERT OR REPLACE INTO caches (key,organization_id,value_json,expires_at) VALUES (?,?,?,?)",
+          "INSERT INTO caches (key,organization_id,value_json,expires_at) VALUES (?,?,?,?) ON CONFLICT(key) DO UPDATE SET value_json=excluded.value_json,expires_at=excluded.expires_at",
           cacheKey,
           c.orgId,
           JSON.stringify({ businesses, warnings, partial }),

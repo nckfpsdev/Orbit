@@ -346,7 +346,7 @@ export async function POST(request: Request, { params }: Params) {
           );
         const changed = await run(
           "UPDATE monitors SET enabled=? WHERE id=? AND organization_id=?",
-          Number(data.enabled),
+          data.enabled,
           s[1],
           c.orgId,
         );

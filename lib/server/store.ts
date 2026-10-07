@@ -68,7 +68,7 @@ export async function saveBusinesses(
             ],
           },
           {
-            sql: "INSERT OR REPLACE INTO business_sources (id,organization_id,business_id,provider,external_id,source_url,license,can_export,checked_at) VALUES (?,?,?,?,?,?,?,?,?)",
+            sql: "INSERT INTO business_sources (id,organization_id,business_id,provider,external_id,source_url,license,can_export,checked_at) VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET provider=excluded.provider,external_id=excluded.external_id,source_url=excluded.source_url,license=excluded.license,can_export=excluded.can_export,checked_at=excluded.checked_at",
             args: [
               `src_${b.id}_${b.source}`,
               c.orgId,
@@ -81,12 +81,12 @@ export async function saveBusinesses(
                 : b.source === "mock"
                   ? "Fictício · desenvolvimento"
                   : "Retenção autorizada pelo provedor",
-              Number(b.can_export),
+              b.can_export,
               date,
             ],
           },
           {
-            sql: "INSERT OR REPLACE INTO digital_presences (id,organization_id,business_id,status,evidence_json,checked_at) VALUES (?,?,?,?,?,?)",
+            sql: "INSERT INTO digital_presences (id,organization_id,business_id,status,evidence_json,checked_at) VALUES (?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,evidence_json=excluded.evidence_json,checked_at=excluded.checked_at",
             args: [
               `dp_${b.id}`,
               c.orgId,
@@ -139,7 +139,7 @@ export async function getBusinessPage(
   query = "",
   listId = "",
 ) {
-  const where = `b.organization_id=? AND ${businessVisibility()} ${savedOnly ? "AND l.id IS NOT NULL" : ""} ${query ? "AND (b.business_name LIKE ? OR b.category LIKE ? OR l.tags_json LIKE ?)" : ""} ${listId ? "AND l.list_id=?" : ""}`;
+  const where = `b.organization_id=? AND ${businessVisibility()} ${savedOnly ? "AND l.id IS NOT NULL" : ""} ${query ? "AND (b.business_name ILIKE ? OR b.category ILIKE ? OR l.tags_json::text ILIKE ?)" : ""} ${listId ? "AND l.list_id=?" : ""}`;
   const args: string[] = query
     ? [c.orgId, `%${query}%`, `%${query}%`, `%${query}%`]
     : [c.orgId];
@@ -278,11 +278,11 @@ export async function saveLead(
         JSON.stringify(tags),
         date,
         date,
-        Number(input.stage !== undefined),
-        Number(input.stage !== undefined),
-        Number(input.list_id !== undefined),
-        Number(input.notes !== undefined),
-        Number(input.tags !== undefined),
+        input.stage !== undefined,
+        input.stage !== undefined,
+        input.list_id !== undefined,
+        input.notes !== undefined,
+        input.tags !== undefined,
       ],
     },
   ];
@@ -295,12 +295,12 @@ export async function saveLead(
     const tagId = `${c.orgId}_tag_${stableHash(tag)}`;
     statements.push(
       {
-        sql: "INSERT OR IGNORE INTO lead_tags (id,organization_id,name,color) VALUES (?,?,?,?)",
+        sql: "INSERT INTO lead_tags (id,organization_id,name,color) VALUES (?,?,?,?) ON CONFLICT(id) DO NOTHING",
         args: [tagId, c.orgId, tag, "#6956e8"],
       },
       {
-        sql: "INSERT OR IGNORE INTO lead_tag_links (lead_id,tag_id) VALUES (?,?)",
-        args: [leadId, tagId],
+        sql: "INSERT INTO lead_tag_links (organization_id,lead_id,tag_id) VALUES (?,?,?) ON CONFLICT(lead_id,tag_id) DO NOTHING",
+        args: [c.orgId, leadId, tagId],
       },
     );
   }
@@ -374,11 +374,11 @@ export async function proposalRecords(c: Context): Promise<ProposalRecord[]> {
 export async function initialize(c: Context) {
   await batch(
     STAGES.map((stage, i) => ({
-      sql: "INSERT OR IGNORE INTO crm_stages (id,organization_id,name,position) VALUES (?,?,?,?)",
+      sql: "INSERT INTO crm_stages (id,organization_id,name,position) VALUES (?,?,?,?) ON CONFLICT(id) DO NOTHING",
       args: [`${c.orgId}_stage_${i}`, c.orgId, stage, i],
     })),
   );
-  const org = await row<{ initialized: number }>(
+  const org = await row<{ initialized: boolean }>(
     "SELECT initialized FROM organizations WHERE id=?",
     c.orgId,
   );
@@ -389,7 +389,7 @@ export async function initialize(c: Context) {
   }
   await batch([
     {
-      sql: "INSERT OR IGNORE INTO subscriptions (id,organization_id,plan,status,created_at) VALUES (?,?,?,?,?)",
+      sql: "INSERT INTO subscriptions (id,organization_id,plan,status,created_at) VALUES (?,?,?,?,?) ON CONFLICT(id) DO NOTHING",
       args: [
         `sub_${c.orgId}`,
         c.orgId,
@@ -399,11 +399,11 @@ export async function initialize(c: Context) {
       ],
     },
     {
-      sql: "INSERT OR IGNORE INTO credit_transactions (id,organization_id,amount,action,created_at) VALUES (?,?,?,?,?)",
+      sql: "INSERT INTO credit_transactions (id,organization_id,amount,action,created_at) VALUES (?,?,?,?,?) ON CONFLICT(id) DO NOTHING",
       args: [`welcome_${c.orgId}`, c.orgId, 250, "welcome", now()],
     },
     {
-      sql: "UPDATE organizations SET initialized=1 WHERE id=?",
+      sql: "UPDATE organizations SET initialized=true WHERE id=?",
       args: [c.orgId],
     },
   ]);
@@ -448,7 +448,7 @@ export async function boot(c: Context): Promise<BootData> {
     ),
   ]);
   const stats = await row<BootData["stats"]>(
-    `SELECT COUNT(b.id) as found,COALESCE(SUM(b.website_status IN ('not_identified','social_only','aggregator','directory')),0) as no_site,COALESCE(SUM(b.lead_score>=80),0) as strong,COALESCE(SUM(l.stage='Negociação'),0) as negotiating,COALESCE(SUM(l.stage='Fechado'),0) as closed,COUNT(l.id) as saved,(SELECT COUNT(*) FROM generated_websites WHERE organization_id=? AND business_id IN (SELECT id FROM businesses b WHERE ${businessVisibility()})) as sites FROM businesses b LEFT JOIN leads l ON l.business_id=b.id AND l.organization_id=b.organization_id WHERE b.organization_id=? AND ${businessVisibility()}`,
+    `SELECT COUNT(b.id) as found,COUNT(*) FILTER (WHERE b.website_status IN ('not_identified','social_only','aggregator','directory')) as no_site,COUNT(*) FILTER (WHERE b.lead_score>=80) as strong,COUNT(*) FILTER (WHERE l.stage='Negociação') as negotiating,COUNT(*) FILTER (WHERE l.stage='Fechado') as closed,COUNT(l.id) as saved,(SELECT COUNT(*) FROM generated_websites WHERE organization_id=? AND business_id IN (SELECT id FROM businesses b WHERE ${businessVisibility()})) as sites FROM businesses b LEFT JOIN leads l ON l.business_id=b.id AND l.organization_id=b.organization_id WHERE b.organization_id=? AND ${businessVisibility()}`,
     c.orgId,
     c.orgId,
   );
@@ -488,7 +488,7 @@ export async function boot(c: Context): Promise<BootData> {
       ai: !!runtime().GEMINI_API_KEY && !!runtime().GEMINI_MODEL,
       audit: !!runtime().WEBSITE_AUDIT_URL,
       scheduler:
-        runtime().SCHEDULER_ENABLED === "true" && !!runtime().WORKER_SECRET,
+        runtime().SCHEDULER_ENABLED === "true" && !!runtime().SCHEDULER_SECRET,
       manage_credits: canManageCredits(c),
     },
   };

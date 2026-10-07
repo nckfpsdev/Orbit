@@ -1,7 +1,7 @@
 import { row, run, now } from "./db";
 import { AppError, type Context } from "./security";
 
-/** A durable operation key survives refresh, retries and concurrent Worker instances. */
+/** A durable operation key survives refresh, retries and concurrent serverless instances. */
 export async function idempotent(
   c: Context,
   request: Request,

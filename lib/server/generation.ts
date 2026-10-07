@@ -1,3 +1,4 @@
+import { UPDATE_WEBSITE_VERSION } from "./atomic-queries";
 import { z } from "zod";
 import type {
   WebsiteContent,
@@ -133,25 +134,11 @@ export async function updateWebsite(
       422,
     );
   const date = now();
-  const r = await batch([
-    {
-      sql: "INSERT INTO website_versions (id,organization_id,website_id,version,content_json,change_note,created_at) SELECT ?,organization_id,id,version+1,?,?,? FROM generated_websites WHERE id=? AND organization_id=? AND version=?",
-      args: [
-        id("version"),
-        JSON.stringify(content),
-        note,
-        date,
-        websiteId,
-        c.orgId,
-        version,
-      ],
-    },
-    {
-      sql: "UPDATE generated_websites SET content_json=?,version=version+1,updated_at=? WHERE id=? AND organization_id=? AND version=?",
-      args: [JSON.stringify(content), date, websiteId, c.orgId, version],
-    },
-  ]);
-  if (!r[1].meta.changes)
+  const changed = await run(UPDATE_WEBSITE_VERSION,
+    JSON.stringify(content), date, websiteId, c.orgId, version,
+    id("version"), note, date,
+  );
+  if (!changed.meta.changes)
     throw new AppError(
       "VERSION_CONFLICT",
       "Outra alteração foi salva. Recarregue o editor.",

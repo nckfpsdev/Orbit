@@ -120,7 +120,7 @@ export async function createMonitor(
 ) {
   if (
     input.enabled &&
-    (runtime().SCHEDULER_ENABLED !== "true" || !runtime().WORKER_SECRET)
+    (runtime().SCHEDULER_ENABLED !== "true" || !runtime().SCHEDULER_SECRET)
   )
     throw new AppError(
       "SCHEDULER_NOT_CONFIGURED",
@@ -134,7 +134,7 @@ export async function createMonitor(
     c.orgId,
     input.name,
     JSON.stringify(input.filters),
-    Number(input.enabled),
+    input.enabled,
     input.interval_hours,
     new Date(Date.now() + input.interval_hours * 3600000).toISOString(),
     now(),

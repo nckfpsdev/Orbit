@@ -1,4 +1,3 @@
-import { businessVisibility } from "@/lib/server/environment";
 import { row, runtime } from "@/lib/server/db";
 import { buildSiteHtml } from "@/lib/domain/site-html";
 import type { WebsiteContent } from "@/lib/domain/types";
@@ -10,8 +9,8 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    const site = await row<{ content_json: string; data_json: string }>(
-      `SELECT w.content_json,b.data_json FROM generated_websites w JOIN businesses b ON b.id=w.business_id AND b.organization_id=w.organization_id WHERE w.slug=? AND w.status='published' AND ${businessVisibility()}`,
+    const site = await row<{ content_json: string; is_demo: boolean }>(
+      "SELECT content_json,is_demo FROM private.published_website(?)",
       slug,
     );
     if (!site)
@@ -22,10 +21,9 @@ export async function GET(
           headers: { "Content-Type": "text/plain; charset=utf-8" },
         },
       );
-    const business = JSON.parse(site.data_json);
     const html = buildSiteHtml(
       JSON.parse(site.content_json) as WebsiteContent,
-      { isFictional: business.is_demo, origin: runtime().APP_ORIGIN, slug },
+      { isFictional: site.is_demo, origin: runtime().APP_ORIGIN, slug },
     );
     return new Response(html, {
       headers: {

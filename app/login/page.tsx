@@ -1,6 +1,8 @@
-import { chatGPTSignInPath } from "@/app/chatgpt-auth";
+import { LoginForm } from "@/components/orbit/login-form";
+import { safeReturnTo } from "@/lib/supabase/redirect";
 import { Orbit, ShieldCheck, Compass } from "lucide-react";
-export default function Login() {
+export default async function Login({ searchParams }: { searchParams: Promise<{ return_to?: string }> }) {
+  const returnTo = safeReturnTo((await searchParams).return_to);
   return (
     <main id="main-content" className="login-page">
       <div className="login-card panel">
@@ -20,9 +22,7 @@ export default function Login() {
           Entre no workspace para descobrir negócios, criar demonstrações e
           acompanhar oportunidades.
         </p>
-        <a className="login-button" href={chatGPTSignInPath("/")} target="_top">
-          Entrar com ChatGPT
-        </a>
+        <LoginForm returnTo={returnTo} />
         <small>
           <ShieldCheck size={14} />
           Seu workspace, protegido e separado por conta.

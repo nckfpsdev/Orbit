@@ -22,7 +22,7 @@ export function database() {
     throw new Error("DATABASE_ROLE_INVALID");
   connection = postgres(url, {
     prepare: false, max: 3, idle_timeout: 20, connect_timeout: 10,
-    ssl: "require",
+    ssl: { rejectUnauthorized: true },
     connection: { application_name: "orbit", statement_timeout: 20000 },
     types: { number: { to: 1700, from: [20, 1700], serialize: (value: number) => String(value), parse: (value: string) => Number(value) } },
     onnotice: () => {},

@@ -1,4 +1,5 @@
 "use client";
+import { LogoutButton } from "./logout-button";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -174,7 +175,7 @@ export function Settings() {
       icon: Radar,
       ready: data.provider_status.scheduler,
       detail:
-        "Requer um agendador externo chamando o worker protegido. Monitores começam pausados.",
+        "Requer um agendador externo chamando o endpoint protegido. Monitores começam pausados.",
       env: "WORKER_SECRET · SCHEDULER_ENABLED",
     },
   ];
@@ -301,12 +302,10 @@ export function Settings() {
                   por organização e protegidos no servidor.
                 </p>
                 <Button asChild variant="outline">
-                  <a
-                    href="/signout-with-chatgpt?return_to=%2Flogin"
-                    target="_top"
+                  <LogoutButton
                   >
                     Sair da conta
-                  </a>
+                  </LogoutButton>
                 </Button>
                 <Button
                   variant="ghost"

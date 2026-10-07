@@ -1,4 +1,5 @@
 "use client";
+import { LogoutButton } from "./logout-button";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -210,13 +211,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 Minha conta
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <a
-                  href="/signout-with-chatgpt?return_to=%2Flogin"
-                  target="_top"
+                <LogoutButton
                 >
                   <LogOut size={15} />
                   Sair
-                </a>
+                </LogoutButton>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

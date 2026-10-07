@@ -1,0 +1,143 @@
+{
+  "date": "2026-10-06",
+  "status": "PASS",
+  "environment": "Cloudflare Worker remoto privado com SIWC real e D1 gerenciado independente",
+  "origin": "https://orbit-validation-20261006.leidianebrito125.chatgpt.site",
+  "project_id": "appgprj_6ac57c4f60e08191852e983ab6dfa4e9",
+  "deployment_id": "appgdep_6ac5811cdd448191934df9c4980c41b4",
+  "source_commit": "8cc9e8312c64615eb5131ec79152a62f1e466c94",
+  "provider": "OpenStreetMap / Overpass VK Maps",
+  "endpoint": "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+  "mock_used": false,
+  "local_worker_or_node_bridge_used": false,
+  "authentication_bypass_used": false,
+  "searches": [
+    {
+      "timestamp": "2026-10-06T23:19:43.498Z",
+      "provider": "osm",
+      "result_count": 101,
+      "cached": false,
+      "filters": {
+        "country": "Brasil",
+        "state": "CE",
+        "city": "Fortaleza",
+        "neighborhood": "",
+        "postal_code": "60160-230",
+        "radius": 1,
+        "category": "Restaurantes",
+        "sub_category": "",
+        "query": "",
+        "provider": "osm",
+        "prioritize_no_site": true,
+        "website_filter": "all",
+        "min_rating": 0,
+        "min_reviews": 0,
+        "min_score": 0,
+        "has_phone": false,
+        "has_whatsapp": false,
+        "crm_status": "all",
+        "sort": "score"
+      },
+      "center": {
+        "latitude": -3.7353838,
+        "longitude": -38.4908072,
+        "label": "Avenida Dom Luís, Meireles, Fortaleza, Ceará, Região Nordeste, 60160-235, Brasil",
+        "source": "Geocoding · OpenStreetMap"
+      }
+    },
+    {
+      "timestamp": "2026-10-06T23:17:24.584Z",
+      "provider": "osm",
+      "result_count": 1,
+      "cached": false,
+      "filters": {
+        "country": "Brasil",
+        "state": "CE",
+        "city": "Fortaleza",
+        "neighborhood": "",
+        "postal_code": "60160-230",
+        "radius": 1,
+        "category": "Clínicas odontológicas",
+        "sub_category": "",
+        "query": "",
+        "provider": "osm",
+        "prioritize_no_site": true,
+        "website_filter": "all",
+        "min_rating": 0,
+        "min_reviews": 0,
+        "min_score": 0,
+        "has_phone": false,
+        "has_whatsapp": false,
+        "crm_status": "all",
+        "sort": "score"
+      },
+      "center": {
+        "latitude": -3.7353838,
+        "longitude": -38.4908072,
+        "label": "Avenida Dom Luís, Meireles, Fortaleza, Ceará, Região Nordeste, 60160-235, Brasil",
+        "source": "Geocoding · OpenStreetMap"
+      }
+    }
+  ],
+  "samples": [
+    {
+      "business_name": "Le Cuisinier",
+      "category": "Restaurantes",
+      "source": "osm",
+      "city": "Fortaleza",
+      "state": "CE",
+      "latitude": -3.7311992,
+      "longitude": -38.4906061
+    },
+    {
+      "business_name": "Camarão Grill",
+      "category": "Restaurantes",
+      "source": "osm",
+      "city": "Fortaleza",
+      "state": "CE",
+      "latitude": -3.7346995,
+      "longitude": -38.494704
+    },
+    {
+      "business_name": "Mangai",
+      "category": "Restaurantes",
+      "source": "osm",
+      "city": "Fortaleza",
+      "state": "CE",
+      "latitude": -3.731092,
+      "longitude": -38.4922294
+    },
+    {
+      "business_name": "Sushikin",
+      "category": "Restaurantes",
+      "source": "osm",
+      "city": "Fortaleza",
+      "state": "CE",
+      "latitude": -3.7321321,
+      "longitude": -38.4893714
+    },
+    {
+      "business_name": "Siq's Burguer",
+      "category": "Restaurantes",
+      "source": "osm",
+      "city": "Fortaleza",
+      "state": "CE",
+      "latitude": -3.7283931,
+      "longitude": -38.4917417
+    }
+  ],
+  "map": {
+    "list_count": 101,
+    "initial_cluster_counts": [97, 4],
+    "expanded_marker_count": 101,
+    "matching_business_opened": "Docentes e Decentes",
+    "full_lead_page_loaded": true,
+    "source_visible": "OpenStreetMap · ODbL",
+    "unknown_reputation_not_invented": true
+  },
+  "limitations": [
+    "Uma consulta explícita de farmácias/1 km recebeu HTTP 504 do provider e erro controlado 502 da aplicação; não foi convertida em resultado vazio/fictício.",
+    "A instância anterior Private.coffee apresentou timeout. As primeiras entradas no combobox sem selecionar a opção mantiveram a categoria original: somente filtros registrados no D1 são contabilizados como consultas comprovadas.",
+    "Nenhum backup/Time Travel/restauração D1 foi validado nesta prova."
+  ]
+}

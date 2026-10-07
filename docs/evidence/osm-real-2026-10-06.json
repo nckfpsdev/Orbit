@@ -1,0 +1,120 @@
+{
+  "status": "PASS",
+  "source": "real OpenStreetMap / ViaCEP / Nominatim",
+  "timestamp": "2026-10-06T18:09:35.441Z",
+  "searches": [
+    {
+      "category": "Restaurantes",
+      "country": "Brasil",
+      "state": "CE",
+      "city": "Fortaleza",
+      "postal_code": "60160-230",
+      "radius_km": 2,
+      "businesses": 234,
+      "partial": false,
+      "cache_verified": true,
+      "sample": [
+        {
+          "name": "Restaurante Frederico",
+          "category": "Restaurantes",
+          "city": "Fortaleza",
+          "latitude": -3.7223083,
+          "longitude": -38.4804757,
+          "source": "osm",
+          "source_url": "https://www.openstreetmap.org/node/11896177248"
+        },
+        {
+          "name": "Two Brothers",
+          "category": "Restaurantes",
+          "city": "Fortaleza",
+          "latitude": -3.7356629,
+          "longitude": -38.5087648,
+          "source": "osm",
+          "source_url": "https://www.openstreetmap.org/node/10148410560"
+        },
+        {
+          "name": "Docentes e Decentes",
+          "category": "Restaurantes",
+          "city": "Fortaleza",
+          "latitude": -3.7380752,
+          "longitude": -38.4887523,
+          "source": "osm",
+          "source_url": "https://www.openstreetmap.org/node/10148410569"
+        }
+      ]
+    },
+    {
+      "category": "Farmácias",
+      "country": "Brasil",
+      "state": "CE",
+      "city": "Fortaleza",
+      "postal_code": "60160-230",
+      "radius_km": 1,
+      "businesses": 23,
+      "partial": false,
+      "cache_verified": true,
+      "sample": [
+        {
+          "name": "Farmácia Drogamaster",
+          "category": "Farmácias",
+          "city": "Fortaleza",
+          "latitude": -3.7269223,
+          "longitude": -38.4963408,
+          "source": "osm",
+          "source_url": "https://www.openstreetmap.org/node/8089812128"
+        },
+        {
+          "name": "Farmácia Drogamaster",
+          "category": "Farmácias",
+          "city": "Fortaleza",
+          "latitude": -3.7419657,
+          "longitude": -38.4946225,
+          "source": "osm",
+          "source_url": "https://www.openstreetmap.org/node/8910411763"
+        },
+        {
+          "name": "Pague Menos",
+          "category": "Farmácias",
+          "city": "Fortaleza",
+          "latitude": -3.7347003,
+          "longitude": -38.498035,
+          "source": "osm",
+          "source_url": "https://www.openstreetmap.org/node/7253527358"
+        }
+      ]
+    }
+  ],
+  "siwc_validated": false,
+  "deployed_worker_egress_validated": false,
+  "transport": "Node outbound bridge for isolated local Worker; NOT destination Worker DNS or SIWC proof",
+  "requests": [
+    {
+      "provider": "viacep.com.br",
+      "status": 200,
+      "duration_ms": 8803,
+      "method": "GET",
+      "app_identified": false
+    },
+    {
+      "provider": "nominatim.openstreetmap.org",
+      "status": 200,
+      "duration_ms": 8088,
+      "method": "GET",
+      "app_identified": true
+    },
+    {
+      "provider": "overpass-api.de",
+      "status": 200,
+      "duration_ms": 9377,
+      "method": "POST",
+      "app_identified": true
+    },
+    {
+      "provider": "overpass-api.de",
+      "status": 200,
+      "duration_ms": 13444,
+      "method": "POST",
+      "app_identified": true
+    }
+  ]
+}

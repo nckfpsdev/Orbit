@@ -1,0 +1,30 @@
+{
+  "date_utc": "2026-10-07",
+  "project_id": "appgprj_6ac448e2a1988191901cfc686bec5acb",
+  "binding": "DB",
+  "auth": {
+    "method": "official-wrangler-oauth-device",
+    "client_version": "4.148.0",
+    "requested_scopes": ["account:read", "user:read", "d1:write"],
+    "operator_reported_approval": true,
+    "client_session_created": false,
+    "continuation_error": "Network access to https://dash.cloudflare.com:443 was blocked by policy",
+    "whoami_result": "You are not authenticated. Please run wrangler login."
+  },
+  "control_plane": {
+    "cloudflare_plugin_available_in_session": false,
+    "required_authorized_https_hosts": ["dash.cloudflare.com", "api.cloudflare.com"],
+    "observed_blocked_host": "dash.cloudflare.com",
+    "physical_source_database_identified": false
+  },
+  "recovery": {
+    "source_time_travel_bookmark_obtained": false,
+    "source_export_completed": false,
+    "backup_imported_into_recovery_copy": false,
+    "controlled_copy_restore_tested": false,
+    "managed_integrity_proof_completed": false,
+    "principal_modified_or_restored": false
+  },
+  "result": "FAIL",
+  "blocker": "Authorized Cloudflare control-plane access is unavailable in this execution environment."
+}

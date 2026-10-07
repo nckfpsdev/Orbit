@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-06",
+  "source": "Cloud Browser, gateway SIWC real e autenticação OpenAI com MFA",
+  "origin": "https://orbit-local-intelligence.leidianebrito125.chatgpt.site",
+  "deployment_under_test": "appgdep_6ac457d2781481919e6b3ca8d9e8ecf8",
+  "mock_auth_used": false,
+  "bypass_used": false,
+  "manual_cookies_or_tokens_used": false,
+  "checks": [
+    {
+      "action": "Abrir origem sem sessão",
+      "result": "Gateway exige Continuar com o ChatGPT",
+      "status": "PASS"
+    },
+    {
+      "action": "Login OpenAI real com senha e MFA via browserAuth",
+      "result": "Callback retorna ao Orbit com a conta autenticada",
+      "status": "PASS"
+    },
+    {
+      "action": "Abrir /dashboard diretamente",
+      "result": "Dashboard e dados do workspace carregam com a conta autenticada",
+      "status": "PASS"
+    },
+    {
+      "action": "Atualizar /dashboard",
+      "result": "Mesma conta e mesmos dados permanecem disponíveis",
+      "status": "PASS"
+    },
+    {
+      "action": "Nova aba diretamente em /crm",
+      "result": "CRM carrega com a mesma sessão",
+      "status": "PASS"
+    },
+    {
+      "action": "Menu da conta → Sair",
+      "result": "Retorno ao gateway de autenticação em /login",
+      "status": "PASS"
+    },
+    {
+      "action": "Abrir /dashboard e atualizar após logout",
+      "result": "Gateway exige nova autenticação; dashboard não é exibido",
+      "status": "PASS"
+    },
+    {
+      "action": "Atualizar a segunda aba em /crm após logout",
+      "result": "Gateway exige nova autenticação; CRM não é exibido",
+      "status": "PASS"
+    }
+  ],
+  "security": "Nenhuma senha, código MFA, token, valor de cookie, state ou nonce foi registrado. A prova de revogação verifica acesso efetivo após logout, sem inspecionar valores de cookies.",
+  "limitations": "Os dados fictícios identificados na versão antiga não foram usados como prova de descoberta real. O deployment principal permaneceu inalterado."
+}

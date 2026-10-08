@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { PGlite } from "@electric-sql/pglite";
-import { bindQuery } from "../lib/server/postgres-query.ts";
+import { bindQuery, databaseJsonType } from "../lib/server/postgres-query.ts";
 import {
   RESERVE_CREDITS,
   REFUND_CREDITS,
@@ -81,6 +81,43 @@ test("the remote connector authorization fixture also passes on a clean schema a
       authorization_validation: "PASS",
       residual_fixture_rows: 0,
     });
+  } finally {
+    await db.close();
+  }
+});
+
+test("CRM tags satisfy the PostgreSQL array constraint after driver serialization", async () => {
+  const db = await setup();
+  try {
+    await seed(db);
+    await query(
+      db,
+      "INSERT INTO crm_stages(id,organization_id,name,position) VALUES(?,?,?,?)",
+      ["unit_stage", "unit_org", "Descoberto", 0],
+    );
+    const tags = databaseJsonType.serialize(
+      JSON.stringify(["preview-e2e", "São Paulo"]),
+    );
+    await query(
+      db,
+      "INSERT INTO leads(id,organization_id,business_id,stage_id,stage,tags_json) VALUES(?,?,?,?,?,?)",
+      [
+        "unit_lead",
+        "unit_org",
+        "unit_business",
+        "unit_stage",
+        "Descoberto",
+        tags,
+      ],
+    );
+    const saved = await db.query(
+      "SELECT jsonb_typeof(tags_json) AS kind,tags_json FROM leads WHERE id='unit_lead'",
+    );
+    assert.deepEqual(saved.rows[0], {
+      kind: "array",
+      tags_json: ["preview-e2e", "São Paulo"],
+    });
+    await db.exec("ROLLBACK");
   } finally {
     await db.close();
   }

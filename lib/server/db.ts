@@ -1,7 +1,7 @@
 import "server-only";
 import postgres from "postgres";
 import { getIdentity } from "@/lib/supabase/auth";
-import { bindQuery, normalizeDbRow } from "./postgres-query";
+import { bindQuery, normalizeDbRow, databaseJsonType } from "./postgres-query";
 import { databaseTlsOptions } from "./database-tls";
 
 export interface RuntimeEnv extends NodeJS.ProcessEnv {
@@ -54,6 +54,7 @@ export function database() {
     ssl: databaseTlsOptions(runtime().SUPABASE_DB_CA_CERT),
     connection: { application_name: "orbit", statement_timeout: 20000 },
     types: {
+      json: databaseJsonType,
       number: {
         to: 1700,
         from: [20, 1700],

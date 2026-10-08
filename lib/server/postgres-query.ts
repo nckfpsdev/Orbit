@@ -72,3 +72,21 @@ export function normalizeDbRow(record: Record<string, unknown>) {
     ]),
   );
 }
+
+/** The repository supplies JSON text; do not encode that text a second time. */
+export const databaseJsonType = {
+  to: 114,
+  from: [114, 3802],
+  serialize(value: unknown): string {
+    if (typeof value === "string") {
+      JSON.parse(value);
+      return value;
+    }
+    const serialized = JSON.stringify(value);
+    if (serialized === undefined) throw new Error("INVALID_JSON_PARAMETER");
+    return serialized;
+  },
+  parse(value: string): unknown {
+    return JSON.parse(value);
+  },
+};
